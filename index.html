@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffd9b8">
+<title>Тёплая волна: пожелание на день</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💌%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --ink:#3b2f3a;
+    --ink-soft:#7a6a77;
+    --cream:#fffaf2;
+    --accent:#e8845f;
+    --accent-soft:#fde3d6;
+    --shadow:0 18px 50px -12px rgba(120,60,70,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    color:var(--ink);
+    background:linear-gradient(160deg,#ffe7d1 0%,#ffd3dc 45%,#e2d3ff 100%);
+    background-attachment:fixed;
+    display:flex;flex-direction:column;align-items:center;
+    padding:max(20px,env(safe-area-inset-top)) 18px max(20px,env(safe-area-inset-bottom));
+    overflow-x:hidden;
+    transition:background .6s;
+  }
+
+  /* мягкие пятна на фоне */
+  .blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:.55;pointer-events:none;z-index:0;animation:drift 18s ease-in-out infinite alternate}
+  .b1{width:320px;height:320px;background:#ffb88c;top:-80px;left:-90px}
+  .b2{width:380px;height:380px;background:#c7a8ff;bottom:-120px;right:-110px;animation-delay:-6s}
+  .b3{width:240px;height:240px;background:#ff9fb8;top:45%;left:60%;animation-delay:-11s}
+  @keyframes drift{to{transform:translate(40px,-30px) scale(1.15)}}
+
+  main{position:relative;z-index:1;width:100%;max-width:520px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:14px 0}
+
+  header .badge{
+    display:inline-block;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+    color:#a4506b;background:rgba(255,255,255,.65);padding:6px 14px;border-radius:99px;
+    backdrop-filter:blur(6px);
+  }
+  h1{font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:clamp(2.1rem,8vw,3rem);margin:12px 0 4px;line-height:1.05}
+  h1 span{background:linear-gradient(90deg,#f0683c,#d6448a,#7b5cf0);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .date{color:var(--ink-soft);font-size:1rem;text-transform:capitalize}
+
+  .stage{position:relative;width:100%;min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+
+  /* ---------- конверт ---------- */
+  .envelope{
+    position:relative;width:min(320px,82vw);height:min(210px,54vw);
+    border:0;background:none;cursor:pointer;
+    animation:float 4s ease-in-out infinite;
+    transition:transform .4s,opacity .5s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .envelope:hover{transform:scale(1.03) rotate(-1deg)}
+  .envelope:focus-visible{outline:3px solid #7b5cf0;outline-offset:8px;border-radius:16px}
+  @keyframes float{50%{translate:0 -10px}}
+  .env-back{position:absolute;inset:0;background:#f2bf9a;border-radius:14px;box-shadow:var(--shadow)}
+  .env-paper{
+    position:absolute;left:8%;right:8%;top:10%;bottom:12%;background:var(--cream);border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:Georgia,serif;font-style:italic;color:#b9788a;font-size:1.15rem;
+    transition:transform .8s cubic-bezier(.2,.8,.2,1);
+  }
+  .env-front{position:absolute;inset:0;background:#f8d3b3;border-radius:14px;clip-path:polygon(0 30%,50% 66%,100% 30%,100% 100%,0 100%)}
+  .env-flap{
+    position:absolute;left:0;right:0;top:0;height:66%;background:#eeb48a;border-radius:14px 14px 0 0;
+    clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;
+    transition:transform .6s ease;z-index:3;
+  }
+  .env-seal{
+    position:absolute;left:50%;top:56%;translate:-50% -50%;z-index:4;
+    width:54px;height:54px;border-radius:50%;background:#e2557a;color:#fff;font-size:1.6rem;
+    display:grid;place-items:center;box-shadow:0 6px 14px rgba(150,30,70,.4);
+    transition:opacity .3s,transform .3s;
+  }
+  .envelope.opened{animation:none}
+  .envelope.opened .env-flap{transform:rotateX(180deg);z-index:0}
+  .envelope.opened .env-paper{transform:translateY(-42%)}
+  .envelope.opened .env-seal{opacity:0;transform:scale(.4)}
+  .envelope.gone{opacity:0;transform:translateY(30px) scale(.85);pointer-events:none}
+  .hint{color:var(--ink-soft);font-size:.98rem;animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.45}}
+
+  /* ---------- карточка ---------- */
+  .card{
+    position:relative;width:100%;background:var(--cream);border-radius:26px;box-shadow:var(--shadow);
+    padding:34px 26px 24px;overflow:hidden;
+    animation:pop .7s cubic-bezier(.2,1.2,.3,1) both;
+  }
+  .card::before{content:"";position:absolute;left:0;right:0;top:0;height:8px;background:var(--accent);transition:background .4s}
+  .card[hidden]{display:none}
+  @keyframes pop{from{opacity:0;transform:translateY(40px) scale(.9) rotate(-2deg)}to{opacity:1;transform:none}}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:10px}
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:600;
+    padding:6px 12px;border-radius:99px;background:var(--accent-soft);color:var(--ink);
+  }
+  .chip.streak{background:#fff0c9}
+  .chip.bonus{background:#e6dcff}
+  .quote-mark{font-family:Georgia,serif;font-size:4.2rem;line-height:.6;color:var(--accent);opacity:.5;height:30px;margin-top:10px;transition:color .4s}
+  .wish{
+    font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.3rem,5.4vw,1.65rem);line-height:1.45;
+    padding:8px 4px 16px;min-height:130px;display:flex;align-items:center;justify-content:center;
+    transition:opacity .25s,transform .25s;
+  }
+  .wish.swap{opacity:0;transform:translateY(8px)}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(120,80,100,.25),transparent);margin:6px 0 16px}
+  .note{color:var(--ink-soft);font-size:.9rem;margin-bottom:16px}
+  .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .btn{
+    font:inherit;font-weight:600;font-size:.95rem;cursor:pointer;border:0;border-radius:99px;
+    padding:12px 20px;transition:transform .15s,box-shadow .2s,background .2s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:active{transform:scale(.96)}
+  .btn:focus-visible{outline:3px solid #7b5cf0;outline-offset:3px}
+  .btn.primary{background:var(--accent);color:#fff;box-shadow:0 8px 18px -6px var(--accent);transition:background .4s,transform .15s}
+  .btn.primary:hover{transform:translateY(-2px)}
+  .btn.ghost{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 2px #eadbe0}
+  .btn.ghost:hover{background:#fff6f3}
+
+  .tomorrow{color:var(--ink-soft);font-size:.92rem}
+
+  footer{position:relative;z-index:1;color:var(--ink-soft);font-size:.85rem;text-align:center;padding-top:10px}
+
+  /* ---------- сердечки ---------- */
+  .particle{
+    position:fixed;z-index:50;pointer-events:none;font-size:1.5rem;
+    animation:fly 1.8s ease-out forwards;
+  }
+  @keyframes fly{
+    0%{opacity:0;transform:translate(0,0) scale(.3) rotate(0)}
+    15%{opacity:1}
+    100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.2) rotate(var(--rot))}
+  }
+
+  .toast{
+    position:fixed;left:50%;bottom:28px;translate:-50% 30px;opacity:0;z-index:60;
+    background:#3b2f3a;color:#fff;padding:10px 18px;border-radius:99px;font-size:.92rem;
+    transition:opacity .3s,translate .3s;pointer-events:none;
+  }
+  .toast.show{opacity:1;translate:-50% 0}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  }
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+
+<main>
+  <header>
+    <span class="badge">Пожелание дня</span>
+    <h1><span>Тёплая волна</span></h1>
+    <p class="date" id="date"></p>
+  </header>
+
+  <section class="stage" id="stage">
+    <button class="envelope" id="envelope" type="button" aria-label="Открыть пожелание на сегодня">
+      <span class="env-back"></span>
+      <span class="env-paper">Для тебя</span>
+      <span class="env-front"></span>
+      <span class="env-flap"></span>
+      <span class="env-seal">💌</span>
+    </button>
+    <p class="hint" id="hint">Нажми на конверт, чтобы узнать, что тебя ждёт сегодня</p>
+
+    <article class="card" id="card" hidden aria-live="polite">
+      <div class="chips" id="chips"></div>
+      <div class="quote-mark" aria-hidden="true">“</div>
+      <p class="wish" id="wish"></p>
+      <div class="divider"></div>
+      <p class="note" id="note"></p>
+      <div class="actions">
+        <button class="btn primary" id="more" type="button">Хочу ещё одно ✨</button>
+        <button class="btn ghost" id="back" type="button" hidden>Вернуться к моему пожеланию</button>
+        <button class="btn ghost" id="copy" type="button">Скопировать</button>
+      </div>
+    </article>
+  </section>
+
+  <p class="tomorrow" id="tomorrow" hidden>Завтра тебя будет ждать новое пожелание 🌅</p>
+</main>
+
+<footer>Сделано с теплом для группы ЭТОМ 26-9-2</footer>
+<div class="toast" id="toast" role="status"></div>
+<noscript><p style="position:relative;z-index:2;padding:20px;text-align:center">Для работы нужен включённый JavaScript.</p></noscript>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ===== Пожелания. Чтобы добавить своё, допиши строку в нужную группу. ===== */
+  var GROUPS = [
+    { label:'Для настроения', emoji:'☀️', color:'#f2a33c', wishes:[
+      'Пусть сегодня кто-нибудь улыбнётся тебе просто так, без всякого повода.',
+      'Желаю дня, в котором найдётся минута только для тебя. Выпей чай, послушай любимую песню, выдохни.',
+      'Пусть всё, что откладывалось, окажется проще, чем казалось.',
+      'Сегодня тебе повезёт на маленькие радости: тёплый хлеб, свободное место у окна, вовремя пришедший автобус.',
+      'Желаю услышать сегодня хорошее слово именно тогда, когда оно тебе нужно.',
+      'Пусть день будет добрым к тебе, а ты будешь добр к нему.',
+      'От тебя сегодня не требуется идеальность. Достаточно быть собой, этого хватает.',
+      'Пусть в кармане найдётся забытая шоколадка, а в голове хорошая мысль.',
+      'Желаю спокойно дойти до вечера и ни разу не пожалеть о сказанном.',
+      'Пусть сегодня тебе встретится человек, рядом с которым легко молчать.'
+    ]},
+    { label:'Для дружбы', emoji:'🤝', color:'#4aa3a0', wishes:[
+      'Напиши сегодня тому, о ком давно думаешь. Возможно, этот человек ждал твоего сообщения именно сегодня.',
+      'Желаю услышать «я тебя понимаю» и самому сказать это кому-то.',
+      'Пусть рядом с тобой будут люди, с которыми не нужно притворяться.',
+      'Сегодня попробуй спросить у кого-то из группы «как ты на самом деле?» и дождаться настоящего ответа.',
+      'Пусть твоя шутка сегодня рассмешит, а не заденет.',
+      'Желаю друзей, которые радуются твоим победам так же искренне, как твоему хорошему настроению.',
+      'Если рядом кому-то грустно, посиди рядом пять минут. Иногда это лучшее, что можно сделать.',
+      'Пусть тебе сегодня кто-нибудь придержит дверь, а ты придержишь её кому-то другому.',
+      'Желаю, чтобы тебя сегодня выслушали до конца и не перебили.',
+      'Пусть в группе сегодня будет хоть один момент, когда все смеются вместе, а не друг над другом.'
+    ]},
+    { label:'Про уважение', emoji:'🌿', color:'#5d9b5d', wishes:[
+      'Сегодня можно не соглашаться с человеком и всё равно относиться к нему с уважением. Это настоящая сила.',
+      'Желаю тебе спорить с идеями, а не с людьми.',
+      'Пусть у каждого рядом с тобой будет право на своё мнение, и у тебя тоже.',
+      'Помни: «нет» тоже можно сказать мягко. И услышать его спокойно.',
+      'Желаю заметить в ком-то то, что раньше ускользало, и сказать об этом вслух.',
+      'Пусть сегодня никого не высмеют за незнание. Мы все чего-то не знаем.',
+      'Не торопись с выводами о людях. За каждым поведением стоит история, которую ты пока не знаешь.',
+      'Желаю уметь вовремя извиняться и тепло принимать чужие извинения.',
+      'Уважение начинается с мелочей: поздороваться, поблагодарить, не перебить. Пусть таких мелочей у тебя будет много.',
+      'Пусть сегодня получится сказать правду так, чтобы она не обидела.'
+    ]},
+    { label:'Про эмпатию', emoji:'💞', color:'#d6568a', wishes:[
+      'Сегодня постарайся представить себя на месте того, кто тебя раздражает. Хотя бы на минуту.',
+      'Желаю замечать, когда человек говорит «всё нормально», а на самом деле хочет, чтобы его спросили ещё раз.',
+      'Пусть твоё сочувствие сегодня будет не жалостью, а простым «я рядом».',
+      'Не спеши давать советы. Иногда достаточно сказать «мне жаль, что тебе так тяжело».',
+      'Желаю научиться слушать так, чтобы человеку хотелось говорить дальше.',
+      'Попробуй назвать чувство словами: «мне грустно», «я устал(а)», «я рад(а)». Это помогает и тебе, и тем, кто рядом.',
+      'Пусть у тебя хватит терпения на того, кому сегодня тяжелее, чем тебе.',
+      'Желаю заметить чужую усталость и сказать что-то доброе вместо упрёка.',
+      'Не обесценивай чужие переживания. То, что для тебя мелочь, для другого может быть целым днём.',
+      'Пусть эмпатия сегодня будет твоей тихой суперсилой: услышать то, что не сказано.'
+    ]},
+    { label:'Для учёбы', emoji:'📚', color:'#4d7fd6', wishes:[
+      'Пусть сегодня на паре тебе всё будет понятно с первого раза. А если нет, пусть рядом окажется тот, кто объяснит.',
+      'Желаю спокойной сессии, даже если до неё ещё далеко.',
+      'Пусть сегодня получится то, что вчера казалось невозможным.',
+      'Одна маленькая сделанная задача лучше, чем большая идеальная, но не начатая. Желаю хорошего старта.',
+      'Пусть на занятии тебе достанется именно тот вопрос, на который ты знаешь ответ.',
+      'Желаю не бояться ошибаться. Ошибки это тоже уроки, только бесплатные.',
+      'Пусть к тебе сегодня придёт идея, из которой потом получится что-то хорошее.',
+      'Желаю спокойно попросить о помощи, если она нужна. Это не слабость.',
+      'Пусть сегодня хватит времени на всё важное и немного на приятное.',
+      'Сегодня ты ближе к своей цели, чем вчера. Даже если этого не видно.'
+    ]},
+    { label:'Для сил', emoji:'🌙', color:'#7b6bd6', wishes:[
+      'Выпей сегодня воды, поешь нормально и поспи, как только получится. Береги себя, другого такого нет.',
+      'Желаю бодрого утра и мягкого вечера.',
+      'Пусть сегодня хватит сил на всё нужное и останутся силы на что-то любимое.',
+      'Если день пойдёт не так, помни: он закончится. Завтра будет новый.',
+      'Желаю хотя бы раз сегодня пройтись без телефона и просто посмотреть вокруг.',
+      'Пусть ты услышишь внутри тихий голос, который говорит «ты справишься».',
+      'Усталость не значит, что ты плохо стараешься. Иногда она значит, что ты стараешься очень много.',
+      'Желаю сегодня отпустить то, что нельзя изменить.',
+      'Дай себе разрешение на паузу. Она тебе положена.',
+      'Пусть у тебя будет повод гордиться собой хотя бы за одну мелочь.'
+    ]},
+    { label:'Про доброту', emoji:'🌷', color:'#e0707a', wishes:[
+      'Сделай сегодня что-то хорошее и никому об этом не рассказывай.',
+      'Пусть твоё «спасибо» сегодня прозвучит искренне и согреет кому-то день.',
+      'Желаю встретить того, кому ты сможешь помочь, и не пройти мимо.',
+      'Скажи сегодня кому-то из группы что-то хорошее. Это бесплатно, а запоминается надолго.',
+      'Пусть твоя доброта вернётся к тебе, и желательно неожиданно.',
+      'Желаю оказаться тем самым человеком, которого кому-то сегодня не хватало.',
+      'Пусть у тебя будет возможность поддержать того, кто сомневается.',
+      'Оставь после себя сегодня чуть больше тепла, чем было до тебя.',
+      'Один добрый поступок в день, и мир становится чуточку лучше. Начни с одного.',
+      'Пусть ты увидишь, как маленькое «спасибо» меняет настроение целого коридора.'
+    ]},
+    { label:'Для сети', emoji:'📱', color:'#3aa0c8', wishes:[
+      'Перед тем как написать в чат, представь, что говоришь это человеку в глаза. Если можно, отправляй.',
+      'Желаю в сети сегодня только добрых комментариев и ни одной ссоры.',
+      'Пусть чужая грубость в интернете сегодня тебя не заденет. Часто она совсем не про тебя.',
+      'Желаю уметь вовремя закрыть вкладку, из-за которой портится настроение.',
+      'Не пересылай чужие секреты и неудачные фото. Пусть у тебя будет репутация человека, которому можно доверять.'
+    ]},
+    { label:'Для веры в себя', emoji:'🌟', color:'#e0a020', wishes:[
+      'У тебя уже получалось то, что раньше казалось невозможным. Получится и сегодня.',
+      'Желаю увидеть сегодня в себе то, что видят в тебе другие.',
+      'Пусть ты сделаешь шаг к мечте, пусть даже самый маленький.',
+      'Ты можешь меняться, и это нормально. Каждый день это новый шанс.',
+      'Желаю смелости сказать то, что давно хотелось, и мудрости сказать это добрыми словами.',
+      'Пусть твои сомнения сегодня будут тише твоих желаний.',
+      'Пусть у тебя будет сегодня причина сказать себе «молодец».',
+      'Ты важен в этой группе, даже если иногда так не кажется.',
+      'Желаю дорасти до того, о чём ты мечтаешь, и не растерять по дороге себя.',
+      'Пусть сегодняшний день станет тем, что ты потом с теплотой вспомнишь.'
+    ]},
+    { label:'Для улыбки', emoji:'😄', color:'#f08a3c', wishes:[
+      'Пусть сегодня в столовой достанется последний вкусный пирожок.',
+      'Желаю дня без «ой, забыл(а)» и «а где мой телефон?».',
+      'Пусть Wi-Fi сегодня работает быстро, а зарядка не садится до самого вечера.',
+      'Желаю сегодня засмеяться так, чтобы заболел живот.',
+      'Пусть расписание будет добрым, а окна между парами хватит на кофе и разговор.',
+      'Пусть на вопрос «что у нас дальше?» тебе сегодня ответят сразу и правильно.',
+      'Желаю увидеть красивое небо, пусть даже из окна аудитории.',
+      'Пусть в этот день тебя ждёт тёплое слово, тёплый чай и тёплые люди.'
+    ]}
+  ];
+
+  var ALL = [];
+  GROUPS.forEach(function(g){
+    g.wishes.forEach(function(t){ ALL.push({ text:t, label:g.label, emoji:g.emoji, color:g.color }); });
+  });
+
+  /* ===== Хранилище с запасным вариантом, если браузер его запрещает ===== */
+  var canStore = (function(){
+    try { localStorage.setItem('__t','1'); localStorage.removeItem('__t'); return true; }
+    catch(e){ return false; }
+  })();
+  function load(k, def){
+    if(!canStore) return def;
+    try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch(e){ return def; }
+  }
+  function save(k, v){
+    if(!canStore) return;
+    try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){}
+  }
+
+  /* ===== Даты ===== */
+  function keyOf(d){
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+  var now = new Date();
+  var today = keyOf(now);
+  var yesterday = keyOf(new Date(now.getFullYear(), now.getMonth(), now.getDate()-1));
+
+  document.getElementById('date').textContent =
+    now.toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
+
+  function hash(s){
+    var h = 0;
+    for(var i=0;i<s.length;i++){ h = (h*31 + s.charCodeAt(i)) >>> 0; }
+    return h;
+  }
+
+  /* ===== Выбор пожелания на день: не повторяется, пока не покажутся все ===== */
+  function dailyIndex(){
+    var saved = load('wish-day', null);
+    if(saved && saved.date === today && ALL[saved.i]) return saved.i;
+    var i;
+    if(canStore){
+      var seen = load('wish-seen', []);
+      var pool = [];
+      for(var k=0;k<ALL.length;k++){ if(seen.indexOf(k) === -1) pool.push(k); }
+      if(!pool.length){ seen = []; for(var j=0;j<ALL.length;j++) pool.push(j); }
+      i = pool[Math.floor(Math.random()*pool.length)];
+      seen.push(i);
+      save('wish-seen', seen);
+      save('wish-day', { date:today, i:i });
+    } else {
+      i = hash(today) % ALL.length;
+    }
+    return i;
+  }
+
+  function updateStreak(){
+    var s = load('wish-streak', null);
+    if(s && s.last === today) return s.n;
+    var n = (s && s.last === yesterday) ? s.n + 1 : 1;
+    save('wish-streak', { last:today, n:n });
+    return n;
+  }
+
+  /* ===== Элементы ===== */
+  var $ = function(id){ return document.getElementById(id); };
+  var envelope = $('envelope'), hint = $('hint'), card = $('card');
+  var wishEl = $('wish'), chipsEl = $('chips'), noteEl = $('note');
+  var moreBtn = $('more'), backBtn = $('back'), copyBtn = $('copy');
+  var tomorrow = $('tomorrow'), toast = $('toast');
+
+  var dailyI = dailyIndex();
+  var current = { i:dailyI, bonus:false };
+  var lastExtras = [];
+  var streak = 1;
+
+  function setAccent(color){
+    var r = document.documentElement.style;
+    r.setProperty('--accent', color);
+    r.setProperty('--accent-soft', color + '26');
+  }
+
+  function plural(n){
+    var m10 = n % 10, m100 = n % 100;
+    if(m10 === 1 && m100 !== 11) return 'день';
+    if(m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return 'дня';
+    return 'дней';
+  }
+
+  function render(animate){
+    var w = ALL[current.i];
+    function apply(){
+      setAccent(w.color);
+      wishEl.textContent = w.text;
+      chipsEl.innerHTML = '';
+      var c = document.createElement('span');
+      c.className = 'chip';
+      c.textContent = w.emoji + ' ' + w.label;
+      chipsEl.appendChild(c);
+      if(current.bonus){
+        var b = document.createElement('span');
+        b.className = 'chip bonus';
+        b.textContent = '🎁 Бонус';
+        chipsEl.appendChild(b);
+      } else if(streak >= 2){
+        var s = document.createElement('span');
+        s.className = 'chip streak';
+        s.textContent = '🔥 ' + streak + ' ' + plural(streak) + ' подряд';
+        chipsEl.appendChild(s);
+      }
+      noteEl.textContent = current.bonus
+        ? 'Это бонусное пожелание. Твоё главное на сегодня сохранено.'
+        : 'Это твоё пожелание на сегодня. Пусть оно будет с тобой весь день.';
+      backBtn.hidden = !current.bonus;
+      wishEl.classList.remove('swap');
+    }
+    if(animate){
+      wishEl.classList.add('swap');
+      setTimeout(apply, 230);
+    } else {
+      apply();
+    }
+  }
+
+  function showCard(){
+    card.hidden = false;
+    envelope.style.display = 'none';
+    hint.style.display = 'none';
+    tomorrow.hidden = false;
+    render(false);
+  }
+
+  /* ===== Сердечки ===== */
+  function burst(){
+    if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var icons = ['💛','🧡','💜','💖','✨','🌷','☀️','🌟'];
+    var rect = card.getBoundingClientRect();
+    var cx = rect.left + rect.width/2;
+    var cy = rect.top + Math.min(rect.height/2, 160);
+    for(var i=0;i<22;i++){
+      var p = document.createElement('span');
+      p.className = 'particle';
+      p.textContent = icons[Math.floor(Math.random()*icons.length)];
+      p.style.left = cx + 'px';
+      p.style.top = cy + 'px';
+      p.style.setProperty('--dx', (Math.random()*360-180) + 'px');
+      p.style.setProperty('--dy', (-80 - Math.random()*240) + 'px');
+      p.style.setProperty('--rot', (Math.random()*80-40) + 'deg');
+      p.style.animationDelay = (Math.random()*0.25) + 's';
+      document.body.appendChild(p);
+      setTimeout(function(el){ return function(){ el.remove(); }; }(p), 2300);
+    }
+  }
+
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(showToast.t);
+    showToast.t = setTimeout(function(){ toast.classList.remove('show'); }, 1800);
+  }
+
+  /* ===== Действия ===== */
+  envelope.addEventListener('click', function(){
+    if(envelope.classList.contains('opened')) return;
+    streak = updateStreak();
+    envelope.classList.add('opened');
+    hint.style.display = 'none';
+    setTimeout(function(){ envelope.classList.add('gone'); }, 750);
+    setTimeout(function(){
+      showCard();
+      burst();
+    }, 1150);
+  });
+
+  moreBtn.addEventListener('click', function(){
+    var pool = [];
+    for(var k=0;k<ALL.length;k++){
+      if(k !== dailyI && k !== current.i && lastExtras.indexOf(k) === -1) pool.push(k);
+    }
+    if(!pool.length){ lastExtras = []; for(var j=0;j<ALL.length;j++){ if(j !== dailyI && j !== current.i) pool.push(j); } }
+    var i = pool[Math.floor(Math.random()*pool.length)];
+    lastExtras.push(i);
+    if(lastExtras.length > 30) lastExtras.shift();
+    current = { i:i, bonus:true };
+    render(true);
+    setTimeout(burst, 250);
+  });
+
+  backBtn.addEventListener('click', function(){
+    current = { i:dailyI, bonus:false };
+    render(true);
+  });
+
+  copyBtn.addEventListener('click', function(){
+    var text = ALL[current.i].text + '\n\nПожелание дня от группы ЭТОМ 26-9-2 💌';
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); showToast('Скопировано 💌'); }
+      catch(e){ showToast('Не получилось скопировать'); }
+      ta.remove();
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ showToast('Скопировано 💌'); }, fallback);
+    } else { fallback(); }
+  });
+
+  /* Если пожелание на сегодня уже открывали, сразу показываем его */
+  var already = load('wish-streak', null);
+  if(canStore && already && already.last === today){
+    streak = already.n;
+    showCard();
+  }
+})();
+</script>
+</body>
+</html>
